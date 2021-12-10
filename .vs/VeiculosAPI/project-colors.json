@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "8024b897-c38a-45ac-9a64-81cc7c51baaa": {
+      "ProjectGuid": "8024b897-c38a-45ac-9a64-81cc7c51baaa",
+      "DisplayName": "VeiculosAPI",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}
