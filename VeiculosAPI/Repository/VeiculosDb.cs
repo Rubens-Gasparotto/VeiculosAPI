@@ -12,11 +12,16 @@ namespace VeiculosAPI.Repository
     {
         public VeiculosDb(DbContextOptions<VeiculosDb> options) : base(options) { }
 
-        public DbSet<Usuario> Usuarios { get; set; }
+        public virtual DbSet<Usuario> Usuarios { get; set; }
+        public virtual DbSet<Marca> Marcas { get; set; }
+        public virtual DbSet<Modelo> Modelos { get; set; }
+        public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Marca>().HasMany(c => c.Modelos).WithOne(c => c.Marca).HasForeignKey(c => c.MarcaId);
         }
 
         public override int SaveChanges()
@@ -51,24 +56,26 @@ namespace VeiculosAPI.Repository
         {
             var createdItems = ChangeTracker.Entries().Where(e => e.State == EntityState.Added && e.Metadata.GetProperties().Any(x => x.Name == "CreatedAt") && e.Metadata.GetProperties().Any(x => x.Name == "UpdatedAt"));
             var updatedItems = ChangeTracker.Entries().Where(e => e.State == EntityState.Modified && e.Metadata.GetProperties().Any(x => x.Name == "CreatedAt") && e.Metadata.GetProperties().Any(x => x.Name == "UpdatedAt"));
-            var deletedItems = ChangeTracker.Entries().Where(e => e.State == EntityState.Deleted && e.Metadata.GetProperties().Any(x => x.Name == "IsDeleted"));
+            var deletedItems = ChangeTracker.Entries().Where(e => e.State == EntityState.Deleted && e.Metadata.GetProperties().Any(x => x.Name == "DeletedAt"));
+
+            var now = DateTime.UtcNow;
 
             foreach (var item in createdItems)
             {
-                item.CurrentValues["CreatedAt"] = DateTime.Now;
-                item.CurrentValues["UpdatedAt"] = DateTime.Now;
+                item.CurrentValues["CreatedAt"] = now;
+                item.CurrentValues["UpdatedAt"] = now;
             }
 
             foreach (var item in updatedItems)
             {
                 item.CurrentValues["CreatedAt"] = item.OriginalValues["CreatedAt"];
-                item.CurrentValues["UpdatedAt"] = DateTime.Now;
+                item.CurrentValues["UpdatedAt"] = now;
             }
 
             foreach (var item in deletedItems)
             {
                 item.State = EntityState.Unchanged;
-                item.CurrentValues["DeletedAt"] = DateTime.Now;
+                item.CurrentValues["DeletedAt"] = now;
             }
         }
     }

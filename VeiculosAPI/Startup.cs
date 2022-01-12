@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,7 +11,17 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Text;
 using VeiculosAPI.Repository;
-using VeiculosAPI.Services.LoginService;
+using VeiculosAPI.Repository.Models;
+using VeiculosAPI.Services.BaseService;
+using VeiculosAPI.Services.BaseService.Interfaces;
+using VeiculosAPI.Services.AuthService;
+using VeiculosAPI.Services.MarcaService;
+using VeiculosAPI.Services.MarcaService.Interfaces;
+using VeiculosAPI.Services.ModeloService;
+using VeiculosAPI.Services.ModeloService.Interfaces;
+using VeiculosAPI.Repository.DTOs;
+using AutoMapper;
+using VeiculosAPI.Core;
 
 namespace VeiculosAPI
 {
@@ -30,42 +41,51 @@ namespace VeiculosAPI
                 options.UseMySql(
                     Configuration.GetConnectionString("MySqlConnectionString"),
                     MySqlServerVersion.LatestSupportedServerVersion,
-                    options => {
+                    options =>
+                    {
                         options.MigrationsAssembly(typeof(VeiculosDb).Assembly.FullName);
-                        options.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
+                        options.EnableRetryOnFailure(12, TimeSpan.FromSeconds(5), null);
                     })
                 );
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AllowOrigin",
-                    builder => builder.AllowAnyOrigin());
-            });
+            services.AddCors(options => options.AddPolicy("AllowOrigin", builder => builder.AllowAnyOrigin()));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
+            .AddJwtBearer(options =>
+            {
+                var key = Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]);
+
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = Configuration["Jwt:Issuer"],
-                        ValidAudience = Configuration["Jwt:Audience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
-                    };
-                });
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateIssuerSigningKey = true
+                };
+            });
 
             services.AddApiVersioning();
 
-            services.AddControllers().AddNewtonsoftJson();
-            services.AddSwaggerGen(c =>
+            var mappingConfig = new MapperConfiguration(mc =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "VeiculosAPI", Version = "v1" });
+                mc.AddProfile(new MappingProfile());
             });
 
-            services.AddScoped<ILoginService, LoginService>();
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
+            services.AddControllers()
+                .AddNewtonsoftJson()
+                .AddFluentValidation(config => config.RegisterValidatorsFromAssembly(typeof(Modelo).Assembly));
+
+            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "VeiculosAPI", Version = "v1" }));
+
+            services.AddScoped<IBaseService<BaseModel, BaseCreateDTO, BaseEditDTO>, BaseService<BaseModel, BaseCreateDTO, BaseEditDTO>>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IMarcaService, MarcaService>();
+            services.AddScoped<IModeloService, ModeloService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -82,9 +102,8 @@ namespace VeiculosAPI
 
             app.UseRouting();
 
-            app.UseAuthorization();
-
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

@@ -48,3 +48,13 @@ C:\Users\Rubens.Gasparotto\Documents\Rubens\DotNet\VeiculosAPI\VeiculosAPI\bin\D
 C:\Users\Rubens.Gasparotto\Documents\Rubens\DotNet\VeiculosAPI\VeiculosAPI\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\Rubens.Gasparotto\Documents\Rubens\DotNet\VeiculosAPI\VeiculosAPI\bin\Debug\net5.0\Newtonsoft.Json.dll
 C:\Users\Rubens.Gasparotto\Documents\Rubens\DotNet\VeiculosAPI\VeiculosAPI\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll
+C:\Users\Rubens.Gasparotto\Documents\Rubens\DotNet\VeiculosAPI\VeiculosAPI\bin\Debug\net5.0\FluentValidation.dll
+C:\Users\Rubens.Gasparotto\Documents\Rubens\DotNet\VeiculosAPI\VeiculosAPI\bin\Debug\net5.0\FluentValidation.AspNetCore.dll
+C:\Users\Rubens.Gasparotto\Documents\Rubens\DotNet\VeiculosAPI\VeiculosAPI\bin\Debug\net5.0\FluentValidation.DependencyInjectionExtensions.dll
+C:\Users\Rubens.Gasparotto\Documents\Rubens\DotNet\VeiculosAPI\VeiculosAPI\bin\Debug\net5.0\MicroElements.Swashbuckle.FluentValidation.dll
+C:\Users\Rubens.Gasparotto\Documents\Rubens\DotNet\VeiculosAPI\VeiculosAPI\bin\Debug\net5.0\AutoMapper.dll
+C:\Users\Rubens.Gasparotto\Documents\Rubens\DotNet\VeiculosAPI\VeiculosAPI\bin\Debug\net5.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\Rubens.Gasparotto\Documents\Rubens\DotNet\VeiculosAPI\VeiculosAPI\bin\Debug\net5.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\Rubens.Gasparotto\Documents\Rubens\DotNet\VeiculosAPI\VeiculosAPI\bin\Debug\net5.0\Microsoft.Extensions.Options.dll
+C:\Users\Rubens.Gasparotto\Documents\Rubens\DotNet\VeiculosAPI\VeiculosAPI\bin\Debug\net5.0\Microsoft.Extensions.Primitives.dll
+C:\Users\Rubens.Gasparotto\Documents\Rubens\DotNet\VeiculosAPI\VeiculosAPI\bin\Debug\net5.0\System.Runtime.CompilerServices.Unsafe.dll

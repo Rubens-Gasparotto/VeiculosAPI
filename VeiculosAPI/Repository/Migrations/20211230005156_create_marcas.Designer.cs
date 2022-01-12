@@ -2,20 +2,54 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VeiculosAPI.Repository;
 
 namespace VeiculosAPI.Migrations
 {
     [DbContext(typeof(VeiculosDb))]
-    partial class VeiculosDbModelSnapshot : ModelSnapshot
+    [Migration("20211230005156_create_marcas")]
+    partial class create_marcas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 64)
                 .HasAnnotation("ProductVersion", "5.0.12");
+
+            modelBuilder.Entity("VeiculosAPI.Repository.Models.Marcas", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("created_at");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("deleted_at");
+
+                    b.Property<string>("Logo")
+                        .HasColumnType("longtext")
+                        .HasColumnName("logo");
+
+                    b.Property<string>("Nome")
+                        .HasColumnType("longtext")
+                        .HasColumnName("nome");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("marcas");
+                });
 
             modelBuilder.Entity("VeiculosAPI.Repository.Models.Usuario", b =>
                 {
@@ -24,11 +58,11 @@ namespace VeiculosAPI.Migrations
                         .HasColumnType("int")
                         .HasColumnName("id");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("created_at");
 
-                    b.Property<DateTime>("DeletedAt")
+                    b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("deleted_at");
 
@@ -36,7 +70,7 @@ namespace VeiculosAPI.Migrations
                         .HasColumnType("longtext")
                         .HasColumnName("email");
 
-                    b.Property<DateTime>("EmailVerificadoEm")
+                    b.Property<DateTime?>("EmailVerificadoEm")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("email_verificado_em");
 
@@ -48,7 +82,7 @@ namespace VeiculosAPI.Migrations
                         .HasColumnType("longtext")
                         .HasColumnName("senha");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
