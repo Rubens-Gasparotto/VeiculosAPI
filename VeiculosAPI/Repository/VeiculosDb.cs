@@ -58,7 +58,7 @@ namespace VeiculosAPI.Repository
             var updatedItems = ChangeTracker.Entries().Where(e => e.State == EntityState.Modified && e.Metadata.GetProperties().Any(x => x.Name == "CreatedAt") && e.Metadata.GetProperties().Any(x => x.Name == "UpdatedAt"));
             var deletedItems = ChangeTracker.Entries().Where(e => e.State == EntityState.Deleted && e.Metadata.GetProperties().Any(x => x.Name == "DeletedAt"));
 
-            var now = DateTime.UtcNow;
+            var now = DateTime.Now;
 
             foreach (var item in createdItems)
             {

@@ -20,16 +20,20 @@ namespace VeiculosAPI.Repository.DTOs.Marca
     public class MarcaCreateDTO : BaseCreateDTO
     {
         [Required]
+        [StringLength(255)]
         public string Nome { get; set; }
         [Required]
+        [StringLength(255)]
         public string Logo { get; set; }
     }
 
     public class MarcaEditDTO : BaseEditDTO
     {
         [Required]
+        [StringLength(255)]
         public string Nome { get; set; }
         [Required]
+        [StringLength(255)]
         public string Logo { get; set; }
     }
 }

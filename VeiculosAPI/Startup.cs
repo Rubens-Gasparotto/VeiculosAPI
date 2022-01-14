@@ -22,6 +22,8 @@ using VeiculosAPI.Services.ModeloService.Interfaces;
 using VeiculosAPI.Repository.DTOs;
 using AutoMapper;
 using VeiculosAPI.Core;
+using VeiculosAPI.Services.UsuarioService.Interfaces;
+using VeiculosAPI.Services.UsuarioService;
 
 namespace VeiculosAPI
 {
@@ -50,6 +52,10 @@ namespace VeiculosAPI
 
             services.AddCors(options => options.AddPolicy("AllowOrigin", builder => builder.AllowAnyOrigin()));
 
+            MapperConfiguration mappingConfig = new(mc => mc.AddProfile(new MappingProfile()));
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
@@ -68,14 +74,6 @@ namespace VeiculosAPI
 
             services.AddApiVersioning();
 
-            var mappingConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new MappingProfile());
-            });
-
-            IMapper mapper = mappingConfig.CreateMapper();
-            services.AddSingleton(mapper);
-
             services.AddControllers()
                 .AddNewtonsoftJson()
                 .AddFluentValidation(config => config.RegisterValidatorsFromAssembly(typeof(Modelo).Assembly));
@@ -86,6 +84,7 @@ namespace VeiculosAPI
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IMarcaService, MarcaService>();
             services.AddScoped<IModeloService, ModeloService>();
+            services.AddScoped<IUsuarioService, UsuarioService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

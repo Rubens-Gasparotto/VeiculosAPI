@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
+using VeiculosAPI.Repository.DTOs.Marca;
+using VeiculosAPI.Repository.DTOs.Modelo;
+using VeiculosAPI.Repository.DTOs.Usuario;
 using VeiculosAPI.Repository.Models;
-using VeiculosAPI.Services.MarcaService.DTOs;
-using VeiculosAPI.Services.ModeloService.DTOs;
 
 namespace VeiculosAPI.Core
 {
@@ -9,13 +10,17 @@ namespace VeiculosAPI.Core
     {
         public MappingProfile()
         {
-            CreateMap<Marca, MarcaCreateDTO>();
-            CreateMap<Marca, MarcaEditDTO>();
-            CreateMap<Marca, MarcaDTO>();
+            CreateMap<MarcaCreateDTO, Marca>();
+            CreateMap<MarcaEditDTO, Marca>();
+            CreateMap<MarcaDTO, Marca>();
 
-            CreateMap<Modelo, ModeloCreateDTO>();
-            CreateMap<Modelo, ModeloEditDTO>();
-            CreateMap<Modelo, ModeloDTO>();
+            CreateMap<ModeloCreateDTO, Modelo>();
+            CreateMap<ModeloEditDTO, Modelo>();
+            CreateMap<ModeloDTO, Modelo>();
+
+            CreateMap<UsuarioCreateDTO, Usuario>();
+            CreateMap<UsuarioEditDTO, Usuario>();
+            CreateMap<UsuarioDTO, Usuario>();
         }
     }
 }

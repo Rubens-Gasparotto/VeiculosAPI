@@ -58,3 +58,6 @@ C:\Users\Rubens.Gasparotto\Documents\Rubens\DotNet\VeiculosAPI\VeiculosAPI\bin\D
 C:\Users\Rubens.Gasparotto\Documents\Rubens\DotNet\VeiculosAPI\VeiculosAPI\bin\Debug\net5.0\Microsoft.Extensions.Options.dll
 C:\Users\Rubens.Gasparotto\Documents\Rubens\DotNet\VeiculosAPI\VeiculosAPI\bin\Debug\net5.0\Microsoft.Extensions.Primitives.dll
 C:\Users\Rubens.Gasparotto\Documents\Rubens\DotNet\VeiculosAPI\VeiculosAPI\bin\Debug\net5.0\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\Rubens.Gasparotto\Documents\Rubens\DotNet\VeiculosAPI\VeiculosAPI\bin\Debug\net5.0\MailKit.dll
+C:\Users\Rubens.Gasparotto\Documents\Rubens\DotNet\VeiculosAPI\VeiculosAPI\bin\Debug\net5.0\MimeKit.dll
+C:\Users\Rubens.Gasparotto\Documents\Rubens\DotNet\VeiculosAPI\VeiculosAPI\bin\Debug\net5.0\BouncyCastle.Crypto.dll

@@ -75,7 +75,7 @@ namespace VeiculosAPI.Services.BaseService
 			}
 		}
 
-		private void Save()
+		public void Save()
         {
 			context.SaveChanges();
         }

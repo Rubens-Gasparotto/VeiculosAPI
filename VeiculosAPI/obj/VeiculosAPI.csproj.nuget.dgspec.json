@@ -56,6 +56,10 @@
               "target": "Package",
               "version": "[10.3.6, )"
             },
+            "MailKit": {
+              "target": "Package",
+              "version": "[3.0.0, )"
+            },
             "MicroElements.Swashbuckle.FluentValidation": {
               "target": "Package",
               "version": "[5.4.0, )"
@@ -81,6 +85,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[5.0.12, )"
+            },
+            "MimeKit": {
+              "target": "Package",
+              "version": "[3.0.0, )"
             },
             "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",
