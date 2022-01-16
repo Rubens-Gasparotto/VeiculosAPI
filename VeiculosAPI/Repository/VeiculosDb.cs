@@ -16,6 +16,7 @@ namespace VeiculosAPI.Repository
         public virtual DbSet<Marca> Marcas { get; set; }
         public virtual DbSet<Modelo> Modelos { get; set; }
         public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
+        public virtual DbSet<Permissao> Permissoes { get; set;}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

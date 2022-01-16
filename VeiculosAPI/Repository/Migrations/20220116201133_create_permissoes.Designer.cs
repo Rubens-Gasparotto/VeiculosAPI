@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VeiculosAPI.Repository;
 
 namespace VeiculosAPI.Migrations
 {
     [DbContext(typeof(VeiculosDb))]
-    partial class VeiculosDbModelSnapshot : ModelSnapshot
+    [Migration("20220116201133_create_permissoes")]
+    partial class create_permissoes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

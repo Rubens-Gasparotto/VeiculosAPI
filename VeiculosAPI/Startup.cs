@@ -24,6 +24,8 @@ using AutoMapper;
 using VeiculosAPI.Core;
 using VeiculosAPI.Services.UsuarioService.Interfaces;
 using VeiculosAPI.Services.UsuarioService;
+using VeiculosAPI.Services.PermissaoService.Interfaces;
+using VeiculosAPI.Services.PermissaoService;
 
 namespace VeiculosAPI
 {
@@ -85,6 +87,7 @@ namespace VeiculosAPI
             services.AddScoped<IMarcaService, MarcaService>();
             services.AddScoped<IModeloService, ModeloService>();
             services.AddScoped<IUsuarioService, UsuarioService>();
+            services.AddScoped<IPermissaoService, PermissaoService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
