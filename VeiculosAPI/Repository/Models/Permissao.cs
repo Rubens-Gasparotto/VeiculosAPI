@@ -10,13 +10,17 @@ namespace VeiculosAPI.Repository.Models
         [StringLength(255)]
         [Column(name: "nome")]
         public string Nome { get; set; }
+
         [Required]
         [StringLength(255)]
         [Column(name: "tipo")]
         public string Tipo { get; set; }
+
         [Required]
         [StringLength(255)]
         [Column(name: "slug")]
         public string Slug { get; set; }
+
+        public Usuario[] Usuarios { get; set; }
     }
 }

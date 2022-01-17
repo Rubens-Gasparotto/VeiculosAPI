@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using VeiculosAPI.Repository.DTOs.Permissao;
 using VeiculosAPI.Repository.Models;
 using VeiculosAPI.Services.PermissaoService.Interfaces;
@@ -18,7 +19,7 @@ namespace VeiculosAPI.Controllers
         [NonAction]
         public override ActionResult<PermissaoDTO> Create([FromBody] PermissaoCreateDTO dados)
         {
-            return StatusCode(405);
+            return base.Create(dados);
         }
 
         [HttpPut]
@@ -26,7 +27,7 @@ namespace VeiculosAPI.Controllers
         [NonAction]
         public override ActionResult<PermissaoDTO> Update([FromRoute] int id, [FromBody] PermissaoEditDTO dados)
         {
-            return StatusCode(405);
+            return base.Update(id, dados);
         }
 
         [HttpDelete]
@@ -34,7 +35,7 @@ namespace VeiculosAPI.Controllers
         [NonAction]
         public override ActionResult<bool> Delete([FromRoute] int id)
         {
-            return StatusCode(405);
+            return base.service.Delete(id);
         }
     }
 }

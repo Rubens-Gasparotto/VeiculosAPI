@@ -7,5 +7,6 @@ namespace VeiculosAPI.Services.UsuarioService.Interfaces
     public interface IUsuarioService : IBaseService<Usuario, UsuarioCreateDTO, UsuarioEditDTO>
     {
         public string VerificarEmail(int id);
+        public void SetPermissoes(int id, int[] permissoes);
     }
 }

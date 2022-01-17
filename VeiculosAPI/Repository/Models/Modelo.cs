@@ -30,7 +30,6 @@ namespace VeiculosAPI.Repository.Models
         [ForeignKey("marca_foreign_key")]
         public int MarcaId { get; set; }
 
-        [JsonIgnore]
         public virtual Marca Marca { get; set; }
     }
 

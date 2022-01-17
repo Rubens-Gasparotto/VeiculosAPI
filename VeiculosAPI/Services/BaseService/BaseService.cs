@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using VeiculosAPI.Repository;
 using VeiculosAPI.Repository.DTOs;
 using VeiculosAPI.Repository.Models;
@@ -11,9 +12,9 @@ namespace VeiculosAPI.Services.BaseService
 {
 	public class BaseService<T, TCreateDTO, TEditDTO> : IBaseService<T, TCreateDTO, TEditDTO> where T : BaseModel where TCreateDTO : BaseCreateDTO where TEditDTO : BaseEditDTO
 	{
-		private readonly VeiculosDb context;
-		private readonly DbSet<T> dbSet;
-		private readonly IMapper mapper;
+		public readonly VeiculosDb context;
+		public readonly DbSet<T> dbSet;
+		public readonly IMapper mapper;
 		public BaseService(VeiculosDb _context, IMapper _mapper)
 		{
 			context = _context;
@@ -21,14 +22,14 @@ namespace VeiculosAPI.Services.BaseService
 			dbSet = context.Set<T>();
 		}
 
-		public virtual List<T> GetAll()
+		public virtual Task<List<T>> GetAll()
 		{
-			return dbSet.Where(c => c.DeletedAt == null).ToList();
+			return dbSet.Where(c => c.DeletedAt == null).ToListAsync();
 		}
 
-		public virtual T Get(int id)
+		public async virtual Task<T> Get(int id)
 		{
-			return dbSet.Find(id);
+			return await dbSet.FindAsync(id);
 		}
 
 		public virtual T Create(TCreateDTO dados)

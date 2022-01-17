@@ -23,5 +23,7 @@ namespace VeiculosAPI.Repository.Models
         [Column(name: "email_verificado_em")]
         [DataType(DataType.DateTime)]
         public DateTime? EmailVerificadoEm { get; set; }
+
+        public Permissao[] Permissoes { get; set; }
     }
 }

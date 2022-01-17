@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using VeiculosAPI.Services.BaseService.Interfaces;
 
 namespace VeiculosAPI.Controllers
@@ -17,7 +18,7 @@ namespace VeiculosAPI.Controllers
         [Produces("application/json")]
         public virtual ActionResult<List<TDTO>> GetAll()
         {
-            return Ok(service.GetAll());
+            return Ok(service.GetAll().Result);
         }
 
         [HttpGet]
@@ -25,7 +26,7 @@ namespace VeiculosAPI.Controllers
         [Produces("application/json")]
         public virtual ActionResult<TDTO> Get([FromRoute] int id)
         {
-            var item = service.Get(id);
+            var item = service.Get(id).Result;
 
             if (item == null)
                 return NotFound();

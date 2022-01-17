@@ -12,17 +12,20 @@ namespace VeiculosAPI.Repository
     {
         public VeiculosDb(DbContextOptions<VeiculosDb> options) : base(options) { }
 
-        public virtual DbSet<Usuario> Usuarios { get; set; }
-        public virtual DbSet<Marca> Marcas { get; set; }
-        public virtual DbSet<Modelo> Modelos { get; set; }
-        public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
-        public virtual DbSet<Permissao> Permissoes { get; set;}
+        public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Marca> Marcas { get; set; }
+        public DbSet<Modelo> Modelos { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<Permissao> Permissoes { get; set; }
+        public DbSet<UsuarioPermissao> UsuarioPermissao { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Marca>().HasMany(c => c.Modelos).WithOne(c => c.Marca).HasForeignKey(c => c.MarcaId);
+            modelBuilder.Entity<Modelo>().HasOne(c => c.Marca).WithMany(c => c.Modelos).HasForeignKey(c => c.MarcaId);
+            modelBuilder.Entity<Usuario>().HasMany(c => c.Permissoes).WithMany(c => c.Usuarios);
         }
 
         public override int SaveChanges()

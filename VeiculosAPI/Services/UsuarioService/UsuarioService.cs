@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using System;
+using System.Threading.Tasks;
 using VeiculosAPI.Core.Email;
 using VeiculosAPI.Core.Email.Templates.VerificacaoEmail;
 using VeiculosAPI.Core.Passwords;
@@ -13,21 +14,15 @@ namespace VeiculosAPI.Services.UsuarioService
 {
     public class UsuarioService : BaseService<Usuario, UsuarioCreateDTO, UsuarioEditDTO>, IUsuarioService
     {
-        private readonly VeiculosDb context;
-        private readonly IMapper mapper;
-        public UsuarioService(VeiculosDb _context, IMapper _mapper) : base(_context, _mapper)
-        {
-            context = _context;
-            mapper = _mapper;
-        }
+        public UsuarioService(VeiculosDb context, IMapper mapper) : base(context, mapper) { }
 
         public override Usuario Create(UsuarioCreateDTO dados)
         {
-            Usuario salvarDado = mapper.Map<UsuarioCreateDTO, Usuario>(dados);
+            Usuario salvarDado = base.mapper.Map<UsuarioCreateDTO, Usuario>(dados);
 
             salvarDado.Senha = PasswordHasher.Hash(salvarDado.Senha);
 
-            Usuario dadosSalvos = context.Usuarios.Add(salvarDado).Entity;
+            var dadosSalvos = base.context.Usuarios.Add(salvarDado).Entity;
 
             Save();
 
@@ -41,7 +36,7 @@ namespace VeiculosAPI.Services.UsuarioService
 
         public string VerificarEmail(int id)
         {
-            Usuario usuario = context.Usuarios.Find(id);
+            Usuario usuario = base.context.Usuarios.Find(id);
 
             if (usuario != null && usuario.EmailVerificadoEm == null)
             {
@@ -51,7 +46,12 @@ namespace VeiculosAPI.Services.UsuarioService
                 return "Conta verificada com sucesso!";
             }
 
-            return "Sua conta jáfoi verificada.";
+            return "Sua conta já foi verificada.";
+        }
+
+        public void SetPermissoes(int id, int[] permissoes)
+        {
+            Usuario usuario = base.context.Usuarios.Find(id);
         }
     }
 }

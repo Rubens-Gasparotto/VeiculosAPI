@@ -1,9 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using VeiculosAPI.Repository.DTOs.Marca;
 
 namespace VeiculosAPI.Repository.DTOs.Modelo
 {
-    public class ModeloDTO
+    public class ModeloDTO : ModeloMarcaDTO
     {
         [Required]
         public int Id { get; set; }
@@ -23,6 +24,11 @@ namespace VeiculosAPI.Repository.DTOs.Modelo
         [Required]
         public DateTime UpdatedAt { get; set; }
         public DateTime DeletedAt { get; set; }
+    }
+
+    public class ModeloMarcaDTO
+    {
+        public MarcaDTO Marca { get; set; }
     }
 
     public class ModeloCreateDTO : BaseCreateDTO

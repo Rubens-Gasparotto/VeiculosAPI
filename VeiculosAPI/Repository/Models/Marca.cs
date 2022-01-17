@@ -19,6 +19,6 @@ namespace VeiculosAPI.Repository.Models
         public string Logo { get; set; }
 
         [JsonIgnore]
-        public List<Modelo> Modelos { get; set; }
+        public virtual List<Modelo> Modelos { get; set; }
     }
 }

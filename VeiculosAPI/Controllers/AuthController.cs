@@ -18,6 +18,7 @@ namespace VeiculosAPI.Controllers
 
         [HttpPost]
         [Route("login")]
+        [Produces("application/json")]
         public ActionResult<LoginResponseDTO> Login([FromBody] LoginDTO dados)
         {
             LoginResponseDTO login = authService.Login(dados);
@@ -34,6 +35,7 @@ namespace VeiculosAPI.Controllers
 
         [HttpPost]
         [Route("refresh")]
+        [Produces("application/json")]
         public ActionResult<LoginResponseDTO> RefreshToken([FromBody] RefreshDTO dados)
         {
             LoginResponseDTO refresh = authService.RefreshToken(dados.Token);
