@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace VeiculosAPI.Repository.Models
@@ -21,6 +23,7 @@ namespace VeiculosAPI.Repository.Models
         [Column(name: "slug")]
         public string Slug { get; set; }
 
-        public Usuario[] Usuarios { get; set; }
+        [JsonIgnore]
+        public ICollection<Usuario> Usuarios { get; set; }
     }
 }

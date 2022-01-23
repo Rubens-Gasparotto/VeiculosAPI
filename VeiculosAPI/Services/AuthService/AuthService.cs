@@ -9,6 +9,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Configuration;
 using VeiculosAPI.Repository.DTOs.Auth;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace VeiculosAPI.Services.AuthService
 {
@@ -45,7 +47,7 @@ namespace VeiculosAPI.Services.AuthService
 
         private bool ChecarCredenciais(string email, string senha)
         {
-            Usuario usuario = context.Usuarios.Where(Usuario => Usuario.Email == email).SingleOrDefault();
+            Usuario usuario = context.Usuarios.AsNoTracking().Where(Usuario => Usuario.Email == email).SingleOrDefault();
 
             if (usuario != null)
             {
@@ -61,12 +63,15 @@ namespace VeiculosAPI.Services.AuthService
         {
             byte[] key = Encoding.ASCII.GetBytes(config["Jwt:Key"]);
 
+            var usuario = context.Usuarios.AsNoTracking().Include(usuario => usuario.Permissoes).Where(usuario => usuario.Email == email).SingleOrDefault();
+            var claimList = new List<Claim>();
+
+            claimList.Add(new Claim(ClaimTypes.Email, email));
+            claimList.Add(new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()));
+
             SecurityTokenDescriptor tokenDescriptor = new()
             {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.Email, email)
-                }),
+                Subject = new ClaimsIdentity(claimList),
                 Expires = DateTime.UtcNow.AddHours(4),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };

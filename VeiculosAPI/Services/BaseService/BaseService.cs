@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using VeiculosAPI.Repository;
 using VeiculosAPI.Repository.DTOs;
 using VeiculosAPI.Repository.Models;
@@ -10,7 +9,7 @@ using VeiculosAPI.Services.BaseService.Interfaces;
 
 namespace VeiculosAPI.Services.BaseService
 {
-	public class BaseService<T, TCreateDTO, TEditDTO> : IBaseService<T, TCreateDTO, TEditDTO> where T : BaseModel where TCreateDTO : BaseCreateDTO where TEditDTO : BaseEditDTO
+    public class BaseService<T, TDTO, TCreateDTO, TEditDTO> : IBaseService<T, TDTO, TCreateDTO, TEditDTO> where T : BaseModel where TDTO : BaseDTO where TCreateDTO : BaseCreateDTO where TEditDTO : BaseEditDTO
 	{
 		public readonly VeiculosDb context;
 		public readonly DbSet<T> dbSet;
@@ -22,14 +21,18 @@ namespace VeiculosAPI.Services.BaseService
 			dbSet = context.Set<T>();
 		}
 
-		public virtual Task<List<T>> GetAll()
+		public virtual List<TDTO> GetAll()
 		{
-			return dbSet.Where(c => c.DeletedAt == null).ToListAsync();
+			var items = dbSet.Where(c => c.DeletedAt == null).ToList();
+
+			return mapper.Map<List<T>, List<TDTO>>(items);
 		}
 
-		public async virtual Task<T> Get(int id)
+		public virtual TDTO Get(int id)
 		{
-			return await dbSet.FindAsync(id);
+			var item = dbSet.Find(id);
+
+			return mapper.Map<T, TDTO>(item);
 		}
 
 		public virtual T Create(TCreateDTO dados)
@@ -79,11 +82,18 @@ namespace VeiculosAPI.Services.BaseService
 		public void Save()
         {
 			context.SaveChanges();
-        }
+		}
 
 		public virtual bool Exists(int id)
         {
 			return dbSet.Any(c => c.Id == id);
-        }
+		}
+
+		public virtual List<Permissao> GetPermissoes(int usuarioId)
+		{
+			var usuario = context.Usuarios.Include(c => c.Permissoes).First(c => c.Id == usuarioId);
+
+			return usuario.Permissoes.ToList();
+		}
 	}
 }

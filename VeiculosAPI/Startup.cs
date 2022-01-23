@@ -82,8 +82,8 @@ namespace VeiculosAPI
 
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "VeiculosAPI", Version = "v1" }));
 
-            services.AddScoped<IBaseService<BaseModel, BaseCreateDTO, BaseEditDTO>, BaseService<BaseModel, BaseCreateDTO, BaseEditDTO>>();
-            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IBaseService<BaseModel, BaseDTO, BaseCreateDTO, BaseEditDTO>, BaseService<BaseModel, BaseDTO, BaseCreateDTO, BaseEditDTO>>();
+            services.AddScoped<IAuthService, AuthService>(); 
             services.AddScoped<IMarcaService, MarcaService>();
             services.AddScoped<IModeloService, ModeloService>();
             services.AddScoped<IUsuarioService, UsuarioService>();

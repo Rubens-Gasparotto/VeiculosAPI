@@ -4,5 +4,5 @@ using VeiculosAPI.Services.BaseService.Interfaces;
 
 namespace VeiculosAPI.Services.PermissaoService.Interfaces
 {
-    public interface IPermissaoService : IBaseService<Permissao, PermissaoCreateDTO, PermissaoEditDTO> { }
+    public interface IPermissaoService : IBaseService<Permissao, PermissaoDTO, PermissaoCreateDTO, PermissaoEditDTO> { }
 }

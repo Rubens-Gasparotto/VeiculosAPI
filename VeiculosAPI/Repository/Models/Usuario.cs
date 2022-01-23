@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -24,6 +25,6 @@ namespace VeiculosAPI.Repository.Models
         [DataType(DataType.DateTime)]
         public DateTime? EmailVerificadoEm { get; set; }
 
-        public Permissao[] Permissoes { get; set; }
+        public ICollection<Permissao> Permissoes { get; set; }
     }
 }

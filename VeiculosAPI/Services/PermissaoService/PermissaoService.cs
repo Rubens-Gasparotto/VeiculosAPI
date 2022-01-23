@@ -7,7 +7,7 @@ using VeiculosAPI.Services.PermissaoService.Interfaces;
 
 namespace VeiculosAPI.Services.PermissaoService
 {
-    public class PermissaoService : BaseService<Permissao, PermissaoCreateDTO, PermissaoEditDTO>, IPermissaoService
+    public class PermissaoService : BaseService<Permissao, PermissaoDTO, PermissaoCreateDTO, PermissaoEditDTO>, IPermissaoService
     {
         public PermissaoService(VeiculosDb context, IMapper mapper) : base(context, mapper) { }
     }

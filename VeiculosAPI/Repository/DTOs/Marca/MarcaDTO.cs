@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace VeiculosAPI.Repository.DTOs.Marca
 {
-    public class MarcaDTO
+    public class MarcaDTO : BaseDTO
     {
         public int Id { get; set; }
         [Required]
@@ -14,7 +14,6 @@ namespace VeiculosAPI.Repository.DTOs.Marca
         public DateTime CreatedAt { get; set; }
         [Required]
         public DateTime UpdatedAt { get; set; }
-        public DateTime DeletedAt { get; set; }
     }
 
     public class MarcaCreateDTO : BaseCreateDTO

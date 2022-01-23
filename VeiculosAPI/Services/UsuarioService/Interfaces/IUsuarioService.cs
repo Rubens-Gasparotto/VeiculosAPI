@@ -1,12 +1,13 @@
-﻿using VeiculosAPI.Repository.DTOs.Usuario;
+﻿using System.Threading.Tasks;
+using VeiculosAPI.Repository.DTOs.Usuario;
 using VeiculosAPI.Repository.Models;
 using VeiculosAPI.Services.BaseService.Interfaces;
 
 namespace VeiculosAPI.Services.UsuarioService.Interfaces
 {
-    public interface IUsuarioService : IBaseService<Usuario, UsuarioCreateDTO, UsuarioEditDTO>
+    public interface IUsuarioService : IBaseService<Usuario, UsuarioDTO, UsuarioCreateDTO, UsuarioEditDTO>
     {
         public string VerificarEmail(int id);
-        public void SetPermissoes(int id, int[] permissoes);
+        public Task SetPermissoes(int id, UsuarioEditPermissoesDTO permissoes);
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Security.Claims;
 using VeiculosAPI.Repository.DTOs.Modelo;
 using VeiculosAPI.Repository.Models;
 using VeiculosAPI.Services.ModeloService.Interfaces;
@@ -14,6 +14,10 @@ namespace VeiculosAPI.Controllers
     [Route("v{version:apiVersion}/modelos")]
     public class ModeloController : BaseController<Modelo, ModeloDTO, ModeloCreateDTO, ModeloEditDTO>
     {
-        public ModeloController(IModeloService service) : base(service) { }
+        public ModeloController(IModeloService service, IHttpContextAccessor httpContextAccessor) : base(service)
+        {
+            base.usuarioId = int.Parse(httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            base.slugPermissao = "modelos";
+        }
     }
 }

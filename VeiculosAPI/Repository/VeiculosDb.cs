@@ -17,7 +17,6 @@ namespace VeiculosAPI.Repository
         public DbSet<Modelo> Modelos { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<Permissao> Permissoes { get; set; }
-        public DbSet<UsuarioPermissao> UsuarioPermissao { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -25,7 +24,10 @@ namespace VeiculosAPI.Repository
 
             modelBuilder.Entity<Marca>().HasMany(c => c.Modelos).WithOne(c => c.Marca).HasForeignKey(c => c.MarcaId);
             modelBuilder.Entity<Modelo>().HasOne(c => c.Marca).WithMany(c => c.Modelos).HasForeignKey(c => c.MarcaId);
-            modelBuilder.Entity<Usuario>().HasMany(c => c.Permissoes).WithMany(c => c.Usuarios);
+            modelBuilder.Entity<Usuario>().HasMany(c => c.Permissoes).WithMany(c => c.Usuarios).UsingEntity<UsuarioPermissao>(
+                j => j.HasOne(c => c.Permissao).WithMany().HasForeignKey(x => x.PermissaoId),
+                j => j.HasOne(c => c.Usuario).WithMany().HasForeignKey(x => x.UsuarioId)
+            );
         }
 
         public override int SaveChanges()

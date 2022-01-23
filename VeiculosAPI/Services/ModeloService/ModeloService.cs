@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
 using VeiculosAPI.Repository;
 using VeiculosAPI.Repository.DTOs.Modelo;
 using VeiculosAPI.Repository.Models;
@@ -10,18 +10,22 @@ using VeiculosAPI.Services.ModeloService.Interfaces;
 
 namespace VeiculosAPI.Services.ModeloService
 {
-    public class ModeloService : BaseService<Modelo, ModeloCreateDTO, ModeloEditDTO>, IModeloService
+    public class ModeloService : BaseService<Modelo, ModeloDTO, ModeloCreateDTO, ModeloEditDTO>, IModeloService
     {
         public ModeloService(VeiculosDb context, IMapper mapper) : base(context, mapper) { }
 
-        public async override Task<List<Modelo>> GetAll()
+        public override List<ModeloDTO> GetAll()
         {
-            return await base.dbSet.Include(c => c.Marca).ToListAsync();
+            var modelos = base.dbSet.Include(c => c.Marca).ToList();
+
+            return this.mapper.Map<List<Modelo>, List<ModeloDTO>>(modelos);
         }
 
-        public async override Task<Modelo> Get(int id)
+        public override ModeloDTO Get(int id)
         {
-            return await base.dbSet.Include(c => c.Marca).FirstAsync(c => c.Id == id);
+            var modelo = base.dbSet.Include(c => c.Marca).First(c => c.Id == id);
+
+            return this.mapper.Map<Modelo, ModeloDTO>(modelo);
         }
     }
 }

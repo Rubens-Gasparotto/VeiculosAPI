@@ -1,15 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
 using VeiculosAPI.Services.BaseService.Interfaces;
 
 namespace VeiculosAPI.Controllers
 {
     public class BaseController<TModel, TDTO, TCreateDTO, TEditDTO> : ControllerBase
     {
-        public IBaseService<TModel, TCreateDTO, TEditDTO> service;
+        public IBaseService<TModel, TDTO, TCreateDTO, TEditDTO> service;
+        public int usuarioId;
+        public string slugPermissao;
 
-        public BaseController(IBaseService<TModel, TCreateDTO, TEditDTO> baseService)
+        public BaseController(IBaseService<TModel, TDTO, TCreateDTO, TEditDTO> baseService)
         {
             service = baseService;
         }
@@ -18,7 +20,10 @@ namespace VeiculosAPI.Controllers
         [Produces("application/json")]
         public virtual ActionResult<List<TDTO>> GetAll()
         {
-            return Ok(service.GetAll().Result);
+            if (!HasPermissao($"listar:{slugPermissao}"))
+                return Forbid();
+
+            return Ok(service.GetAll());
         }
 
         [HttpGet]
@@ -26,7 +31,10 @@ namespace VeiculosAPI.Controllers
         [Produces("application/json")]
         public virtual ActionResult<TDTO> Get([FromRoute] int id)
         {
-            var item = service.Get(id).Result;
+            if (!HasPermissao($"visualizar:{slugPermissao}"))
+                return Forbid();
+
+            var item = service.Get(id);
 
             if (item == null)
                 return NotFound();
@@ -38,6 +46,9 @@ namespace VeiculosAPI.Controllers
         [Produces("application/json")]
         public virtual ActionResult<TDTO> Create([FromBody] TCreateDTO dados)
         {
+            if (!HasPermissao($"criar:{slugPermissao}"))
+                return Forbid();
+
             return Created("", service.Create(dados));
         }
 
@@ -46,6 +57,9 @@ namespace VeiculosAPI.Controllers
         [Produces("application/json")]
         public virtual ActionResult<TDTO> Update([FromRoute] int id, [FromBody] TEditDTO dados)
         {
+            if (!HasPermissao($"editar:{slugPermissao}"))
+                return Forbid();
+
             if (!service.Exists(id))
                 return NotFound();
 
@@ -57,10 +71,18 @@ namespace VeiculosAPI.Controllers
         [Produces("application/json")]
         public virtual ActionResult<bool> Delete([FromRoute] int id)
         {
+            if (!HasPermissao($"remover:{slugPermissao}"))
+                return Forbid();
+
             if (!service.Exists(id))
                 return NotFound();
 
             return Ok(service.Delete(id));
+        }
+
+        public virtual bool HasPermissao(string slug)
+        {
+            return service.GetPermissoes(usuarioId).Any(permissao => permissao.Slug == slug);
         }
     }
 }

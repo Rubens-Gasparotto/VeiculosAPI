@@ -4,5 +4,5 @@ using VeiculosAPI.Services.BaseService.Interfaces;
 
 namespace VeiculosAPI.Services.MarcaService.Interfaces
 {
-    public interface IMarcaService : IBaseService<Marca, MarcaCreateDTO, MarcaEditDTO> { }
+    public interface IMarcaService : IBaseService<Marca, MarcaDTO, MarcaCreateDTO, MarcaEditDTO> { }
 }

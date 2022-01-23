@@ -23,10 +23,9 @@ namespace VeiculosAPI.Repository.DTOs.Modelo
         public DateTime CreatedAt { get; set; }
         [Required]
         public DateTime UpdatedAt { get; set; }
-        public DateTime DeletedAt { get; set; }
     }
 
-    public class ModeloMarcaDTO
+    public class ModeloMarcaDTO : BaseDTO
     {
         public MarcaDTO Marca { get; set; }
     }

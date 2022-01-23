@@ -17,7 +17,6 @@ namespace VeiculosAPI.Repository.DTOs.Permissao
         public DateTime CreatedAt { get; set; }
         [Required]
         public DateTime UpdatedAt { get; set; }
-        public DateTime DeletedAt { get; set; }
     }
 
     public class PermissaoCreateDTO : BaseCreateDTO

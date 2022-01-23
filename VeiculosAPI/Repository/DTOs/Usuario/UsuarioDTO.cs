@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
+using VeiculosAPI.Repository.DTOs.Permissao;
 
 namespace VeiculosAPI.Repository.DTOs.Usuario
 {
@@ -12,14 +13,12 @@ namespace VeiculosAPI.Repository.DTOs.Usuario
         public string Nome { get; set; }
         [Required]
         public string Email{ get; set; }
-        [JsonIgnore]
-        public string Senha { get; set; }
         public DateTime EmailVerificadoEm { get; set; }
         [Required]
         public DateTime CreatedAt { get; set; }
         [Required]
         public DateTime UpdatedAt { get; set; }
-        public DateTime DeletedAt { get; set; }
+        public List<PermissaoDTO> Permissoes { get; set; }
     }
 
     public class UsuarioCreateDTO : BaseCreateDTO
@@ -42,5 +41,11 @@ namespace VeiculosAPI.Repository.DTOs.Usuario
         [Required]
         [StringLength(255)]
         public string Nome { get; set; }
+    }
+
+    public class UsuarioEditPermissoesDTO
+    {
+        [Required]
+        public int[] Permissoes { get; set; }
     }
 }

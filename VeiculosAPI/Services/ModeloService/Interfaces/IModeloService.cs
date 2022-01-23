@@ -4,5 +4,5 @@ using VeiculosAPI.Services.BaseService.Interfaces;
 
 namespace VeiculosAPI.Services.ModeloService.Interfaces
 {
-    public interface IModeloService : IBaseService<Modelo, ModeloCreateDTO, ModeloEditDTO> { }
+    public interface IModeloService : IBaseService<Modelo, ModeloDTO, ModeloCreateDTO, ModeloEditDTO> { }
 }
