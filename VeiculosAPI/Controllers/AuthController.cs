@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using VeiculosAPI.Repository.DTOs.Auth;
 using VeiculosAPI.Services.AuthService;
 
@@ -19,9 +20,9 @@ namespace VeiculosAPI.Controllers
         [HttpPost]
         [Route("login")]
         [Produces("application/json")]
-        public ActionResult<LoginResponseDTO> Login([FromBody] LoginDTO dados)
+        public async Task<ActionResult<LoginResponseDTO>> Login([FromBody] LoginDTO dados)
         {
-            LoginResponseDTO login = authService.Login(dados);
+            LoginResponseDTO login = await authService.Login(dados);
 
             if (login == null)
             {
@@ -36,9 +37,9 @@ namespace VeiculosAPI.Controllers
         [HttpPost]
         [Route("refresh")]
         [Produces("application/json")]
-        public ActionResult<LoginResponseDTO> RefreshToken([FromBody] RefreshDTO dados)
+        public async Task<ActionResult<LoginResponseDTO>> RefreshToken([FromBody] RefreshDTO dados)
         {
-            LoginResponseDTO refresh = authService.RefreshToken(dados.Token);
+            LoginResponseDTO refresh = await authService.RefreshToken(dados.Token);
 
             if (refresh == null)
             {

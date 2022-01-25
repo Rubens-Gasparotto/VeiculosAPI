@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using VeiculosAPI.Repository;
 using VeiculosAPI.Repository.DTOs;
 using VeiculosAPI.Repository.Models;
@@ -21,33 +23,33 @@ namespace VeiculosAPI.Services.BaseService
 			dbSet = context.Set<T>();
 		}
 
-		public virtual List<TDTO> GetAll()
+		public async virtual Task<List<TDTO>> GetAll()
 		{
-			var items = dbSet.Where(c => c.DeletedAt == null).ToList();
+			var items = await dbSet.Where(c => c.DeletedAt == null).ToListAsync();
 
 			return mapper.Map<List<T>, List<TDTO>>(items);
 		}
 
-		public virtual TDTO Get(int id)
+		public async virtual Task<TDTO> Get(int id)
 		{
-			var item = dbSet.Find(id);
+			var item = await dbSet.FindAsync(id);
 
 			return mapper.Map<T, TDTO>(item);
 		}
 
-		public virtual T Create(TCreateDTO dados)
+		public async virtual Task<T> Create(TCreateDTO dados)
 		{
 			T salvarDado = mapper.Map<TCreateDTO, T>(dados);
-			var dadosSalvos = dbSet.Add(salvarDado).Entity;
+			var dadosSalvos = await dbSet.AddAsync(salvarDado);
 
-			Save();
+			await Save();
 
-			return dadosSalvos;
+			return dadosSalvos.Entity;
 		}
 
-		public virtual T Update(int id, TEditDTO dados)
+		public async virtual Task<T> Update(int id, TEditDTO dados)
 		{
-			T original = dbSet.AsNoTracking().FirstOrDefault(c => c.Id == id);
+			T original = await dbSet.FirstAsync(c => c.Id == id);
 
 			T editarDado = mapper.Map<TEditDTO, T>(dados);
 
@@ -56,20 +58,20 @@ namespace VeiculosAPI.Services.BaseService
 
 			dbSet.Update(editarDado);
 
-			Save();
+			await Save();
 
 			return editarDado;
 		}
 
-		public virtual bool Delete(int id)
+		public async virtual Task<bool> Delete(int id)
 		{
-			var entidade = dbSet.Find(id);
+			var entidade = await dbSet.FindAsync(id);
 
 			if (entidade.DeletedAt == null)
 			{
 				dbSet.Remove(entidade);
 
-				Save();
+				await Save();
 
 				return true;
 			}
@@ -79,21 +81,21 @@ namespace VeiculosAPI.Services.BaseService
 			}
 		}
 
-		public void Save()
+		public async Task<int> Save()
         {
-			context.SaveChanges();
+			return await context.SaveChangesAsync();
 		}
 
-		public virtual bool Exists(int id)
+		public async virtual Task<bool> Exists(int id)
         {
-			return dbSet.Any(c => c.Id == id);
+			return await dbSet.AnyAsync(c => c.Id == id);
 		}
 
-		public virtual List<Permissao> GetPermissoes(int usuarioId)
+		public async virtual Task<List<Permissao>> GetPermissoes(int usuarioId)
 		{
-			var usuario = context.Usuarios.Include(c => c.Permissoes).First(c => c.Id == usuarioId);
+			var usuario = await context.Usuarios.AsNoTracking().Include(c => c.Permissoes).FirstAsync(c => c.Id == usuarioId);
 
-			return usuario.Permissoes.ToList();
+			return usuario.Permissoes.Where(c => c.DeletedAt == null).ToList();
 		}
 	}
 }

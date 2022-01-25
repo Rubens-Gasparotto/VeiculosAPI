@@ -3,29 +3,29 @@ using VeiculosAPI.Repository.Seeds;
 
 namespace VeiculosAPI.Migrations
 {
-    public partial class create_usuarios_permissoes : Migration
+    public partial class create_permissoes_usuarios : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "usuarios_permissoes",
+                name: "PermissaoUsuario",
                 columns: table => new
                 {
-                    usuario_id = table.Column<int>(type: "int", nullable: false),
-                    permissao_id = table.Column<int>(type: "int", nullable: false)
+                    PermissoesId = table.Column<int>(type: "int", nullable: false),
+                    UsuariosId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_usuarios_permissoes", x => new { x.permissao_id, x.usuario_id });
+                    table.PrimaryKey("PK_PermissaoUsuario", x => new { x.PermissoesId, x.UsuariosId });
                     table.ForeignKey(
-                        name: "FK_usuarios_permissoes_permissoes_permissao_id",
-                        column: x => x.permissao_id,
+                        name: "FK_PermissaoUsuario_permissoes_PermissoesId",
+                        column: x => x.PermissoesId,
                         principalTable: "permissoes",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_usuarios_permissoes_usuarios_usuario_id",
-                        column: x => x.usuario_id,
+                        name: "FK_PermissaoUsuario_usuarios_UsuariosId",
+                        column: x => x.UsuariosId,
                         principalTable: "usuarios",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
@@ -33,17 +33,16 @@ namespace VeiculosAPI.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_usuarios_permissoes_usuario_id",
-                table: "usuarios_permissoes",
-                column: "usuario_id");
+                name: "IX_PermissaoUsuario_UsuariosId",
+                table: "PermissaoUsuario",
+                column: "UsuariosId");
 
             UsuarioPermissaoSeed.Seed(migrationBuilder);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "usuarios_permissoes");
+            migrationBuilder.DropTable(name: "PermissaoUsuario");
         }
     }
 }

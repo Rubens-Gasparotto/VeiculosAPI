@@ -21,7 +21,6 @@ using VeiculosAPI.Services.ModeloService;
 using VeiculosAPI.Services.ModeloService.Interfaces;
 using VeiculosAPI.Repository.DTOs;
 using AutoMapper;
-using VeiculosAPI.Core;
 using VeiculosAPI.Services.UsuarioService.Interfaces;
 using VeiculosAPI.Services.UsuarioService;
 using VeiculosAPI.Services.PermissaoService.Interfaces;

@@ -7,7 +7,7 @@ namespace VeiculosAPI.Services.UsuarioService.Interfaces
 {
     public interface IUsuarioService : IBaseService<Usuario, UsuarioDTO, UsuarioCreateDTO, UsuarioEditDTO>
     {
-        public string VerificarEmail(int id);
+        public Task<string> VerificarEmail(int id);
         public Task SetPermissoes(int id, UsuarioEditPermissoesDTO permissoes);
     }
 }

@@ -7,8 +7,8 @@ namespace VeiculosAPI.Repository.Seeds
         public static void Seed(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.InsertData(
-                table: "usuarios_permissoes",
-                columns: new[] { "usuario_id", "permissao_id" },
+                table: "PermissaoUsuario",
+                columns: new[] { "UsuariosId", "PermissoesId" },
                 values: new object[,] {
                     { 1, 1 },
                     { 1, 2 },

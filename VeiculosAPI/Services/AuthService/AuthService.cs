@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using VeiculosAPI.Repository.DTOs.Auth;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace VeiculosAPI.Services.AuthService
 {
@@ -24,14 +25,14 @@ namespace VeiculosAPI.Services.AuthService
             context = _context;
             config = _configuration;
         }
-        public LoginResponseDTO Login(LoginDTO dados)
+        public async Task<LoginResponseDTO> Login(LoginDTO dados)
         {
-            bool sucesso = ChecarCredenciais(dados.Email, dados.Senha);
+            bool sucesso = await ChecarCredenciais(dados.Email, dados.Senha);
 
             if (sucesso)
             {
-                string token = GerarTokenJwt(dados.Email);
-                string refreshToken = GerarRefreshTokenJwt(dados.Email);
+                string token = await GerarTokenJwt(dados.Email);
+                string refreshToken = await GerarRefreshTokenJwt(dados.Email);
 
                 return new LoginResponseDTO()
                 {
@@ -45,9 +46,9 @@ namespace VeiculosAPI.Services.AuthService
             }
         }
 
-        private bool ChecarCredenciais(string email, string senha)
+        private async Task<bool> ChecarCredenciais(string email, string senha)
         {
-            Usuario usuario = context.Usuarios.AsNoTracking().Where(Usuario => Usuario.Email == email).SingleOrDefault();
+            Usuario usuario = await context.Usuarios.AsNoTracking().SingleAsync(usuario => usuario.Email == email);
 
             if (usuario != null)
             {
@@ -59,12 +60,12 @@ namespace VeiculosAPI.Services.AuthService
             }
         }
 
-        private string GerarTokenJwt(string email)
+        private async Task<string> GerarTokenJwt(string email)
         {
             byte[] key = Encoding.ASCII.GetBytes(config["Jwt:Key"]);
 
-            var usuario = context.Usuarios.AsNoTracking().Include(usuario => usuario.Permissoes).Where(usuario => usuario.Email == email).SingleOrDefault();
-            var claimList = new List<Claim>();
+            var usuario = await context.Usuarios.AsNoTracking().SingleAsync(usuario => usuario.Email == email);
+            List<Claim> claimList = new();
 
             claimList.Add(new Claim(ClaimTypes.Email, email));
             claimList.Add(new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()));
@@ -83,7 +84,7 @@ namespace VeiculosAPI.Services.AuthService
             return authToken;
         }
 
-        private string GerarRefreshTokenJwt(string email)
+        private async Task<string> GerarRefreshTokenJwt(string email)
         {
             DateTime expiraEm = DateTime.Now.AddDays(1);
 
@@ -100,19 +101,19 @@ namespace VeiculosAPI.Services.AuthService
             SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
             string refreshToken = tokenHandler.WriteToken(token);
 
-            context.RefreshTokens.Add(new RefreshToken { Token = refreshToken, ExpiraEm = expiraEm });
-            context.SaveChanges();
+            await context.RefreshTokens.AddAsync(new RefreshToken { Token = refreshToken, ExpiraEm = expiraEm });
+            await context.SaveChangesAsync();
 
             return refreshToken;
         }
 
-        public LoginResponseDTO RefreshToken(string oldRefreshToken)
+        public async Task<LoginResponseDTO> RefreshToken(string oldRefreshToken)
         {
-            RefreshToken refreshToken = context.RefreshTokens
+            RefreshToken refreshToken = await context.RefreshTokens
                 .Where(refresh => refresh.Token == oldRefreshToken)
                 .Where(refresh => refresh.ExpiraEm > DateTime.Now)
                 .Where(refresh => refresh.DeletedAt == null)
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
             if (refreshToken != null)
             {
@@ -121,11 +122,11 @@ namespace VeiculosAPI.Services.AuthService
 
                 string email = jwtSecurityToken.Claims.FirstOrDefault(claim => claim.Type == "email").Value;
 
-                string token = GerarTokenJwt(email);
-                string newRefreshToken = GerarRefreshTokenJwt(email);
+                string token = await GerarTokenJwt(email);
+                string newRefreshToken = await GerarRefreshTokenJwt(email);
 
                 context.Remove(refreshToken);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
 
                 return new LoginResponseDTO()
                 {

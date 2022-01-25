@@ -5,7 +5,7 @@ using VeiculosAPI.Repository.DTOs.Permissao;
 using VeiculosAPI.Repository.DTOs.Usuario;
 using VeiculosAPI.Repository.Models;
 
-namespace VeiculosAPI.Core
+namespace VeiculosAPI.Repository
 {
 	public class MappingProfile : Profile
 	{
@@ -13,23 +13,20 @@ namespace VeiculosAPI.Core
 		{
 			CreateMap<MarcaCreateDTO, Marca>();
 			CreateMap<MarcaEditDTO, Marca>();
-			CreateMap<MarcaDTO, Marca>();
-            CreateMap<Marca, MarcaDTO>();
+			CreateMap<MarcaDTO, Marca>().ReverseMap();
 
 			CreateMap<ModeloCreateDTO, Modelo>();
 			CreateMap<ModeloEditDTO, Modelo>();
-			CreateMap<ModeloDTO, Modelo>();
-			CreateMap<Modelo, ModeloDTO>();
+			CreateMap<ModeloDTO, Modelo>().ReverseMap();
 
 			CreateMap<UsuarioCreateDTO, Usuario>();
 			CreateMap<UsuarioEditDTO, Usuario>();
-			CreateMap<UsuarioDTO, Usuario>();
-			CreateMap<Usuario, UsuarioDTO>();
+			CreateMap<UsuarioDTO, Usuario>().ReverseMap();
+			CreateMap<UsuarioWithPermissaoDTO, Usuario>().ReverseMap();
 
 			CreateMap<PermissaoCreateDTO, Permissao>();
 			CreateMap<PermissaoEditDTO, Permissao>();
-			CreateMap<PermissaoDTO, Permissao>();
-			CreateMap<Permissao, PermissaoDTO>();
+			CreateMap<PermissaoDTO, Permissao>().ReverseMap();
 		}
 	}
 }

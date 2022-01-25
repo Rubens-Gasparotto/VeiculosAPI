@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using VeiculosAPI.Services.BaseService.Interfaces;
 
 namespace VeiculosAPI.Controllers
@@ -11,30 +14,31 @@ namespace VeiculosAPI.Controllers
         public int usuarioId;
         public string slugPermissao;
 
-        public BaseController(IBaseService<TModel, TDTO, TCreateDTO, TEditDTO> baseService)
+        public BaseController(IBaseService<TModel, TDTO, TCreateDTO, TEditDTO> baseService, IHttpContextAccessor httpContextAccessor)
         {
             service = baseService;
+            usuarioId = int.Parse(httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
         }
 
         [HttpGet]
         [Produces("application/json")]
-        public virtual ActionResult<List<TDTO>> GetAll()
+        public async virtual Task<ActionResult<List<TDTO>>> GetAll()
         {
-            if (!HasPermissao($"listar:{slugPermissao}"))
+            if (!await HasPermissao($"listar:{slugPermissao}"))
                 return Forbid();
 
-            return Ok(service.GetAll());
+            return Ok(await service.GetAll());
         }
 
         [HttpGet]
         [Route("{id:int}")]
         [Produces("application/json")]
-        public virtual ActionResult<TDTO> Get([FromRoute] int id)
+        public async virtual Task<ActionResult<TDTO>> Get([FromRoute] int id)
         {
-            if (!HasPermissao($"visualizar:{slugPermissao}"))
+            if (!await HasPermissao($"visualizar:{slugPermissao}"))
                 return Forbid();
 
-            var item = service.Get(id);
+            var item = await service.Get(id);
 
             if (item == null)
                 return NotFound();
@@ -44,23 +48,23 @@ namespace VeiculosAPI.Controllers
 
         [HttpPost]
         [Produces("application/json")]
-        public virtual ActionResult<TDTO> Create([FromBody] TCreateDTO dados)
+        public async virtual Task<ActionResult<TDTO>> Create([FromBody] TCreateDTO dados)
         {
-            if (!HasPermissao($"criar:{slugPermissao}"))
+            if (!await HasPermissao($"criar:{slugPermissao}"))
                 return Forbid();
 
-            return Created("", service.Create(dados));
+            return Created("", await service.Create(dados));
         }
 
         [HttpPut]
         [Route("{id:int}")]
         [Produces("application/json")]
-        public virtual ActionResult<TDTO> Update([FromRoute] int id, [FromBody] TEditDTO dados)
+        public async virtual Task<ActionResult<TDTO>> Update([FromRoute] int id, [FromBody] TEditDTO dados)
         {
-            if (!HasPermissao($"editar:{slugPermissao}"))
+            if (!await HasPermissao($"editar:{slugPermissao}"))
                 return Forbid();
 
-            if (!service.Exists(id))
+            if (!await service.Exists(id))
                 return NotFound();
 
             return Ok(service.Update(id, dados));
@@ -69,20 +73,22 @@ namespace VeiculosAPI.Controllers
         [HttpDelete]
         [Route("{id:int}")]
         [Produces("application/json")]
-        public virtual ActionResult<bool> Delete([FromRoute] int id)
+        public async virtual Task<ActionResult<bool>> Delete([FromRoute] int id)
         {
-            if (!HasPermissao($"remover:{slugPermissao}"))
+            if (!await HasPermissao($"remover:{slugPermissao}"))
                 return Forbid();
 
-            if (!service.Exists(id))
+            if (!await service.Exists(id))
                 return NotFound();
 
-            return Ok(service.Delete(id));
+            return Ok(await service.Delete(id));
         }
 
-        public virtual bool HasPermissao(string slug)
+        internal async virtual Task<bool> HasPermissao(string slug)
         {
-            return service.GetPermissoes(usuarioId).Any(permissao => permissao.Slug == slug);
+            var permissoes = await service.GetPermissoes(usuarioId);
+
+            return permissoes.Any(permissao => permissao.Slug == slug);
         }
     }
 }

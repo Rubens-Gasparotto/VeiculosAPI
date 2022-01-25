@@ -7,17 +7,16 @@ namespace VeiculosAPI.Repository.DTOs.Usuario
 {
     public class UsuarioDTO : BaseDTO
     {
-        [Required]
         public int Id { get; set; }
-        [Required]
         public string Nome { get; set; }
-        [Required]
         public string Email{ get; set; }
         public DateTime EmailVerificadoEm { get; set; }
-        [Required]
         public DateTime CreatedAt { get; set; }
-        [Required]
         public DateTime UpdatedAt { get; set; }
+    }
+
+    public class UsuarioWithPermissaoDTO : UsuarioDTO
+    {
         public List<PermissaoDTO> Permissoes { get; set; }
     }
 

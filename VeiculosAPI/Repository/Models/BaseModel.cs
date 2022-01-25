@@ -6,25 +6,16 @@ namespace VeiculosAPI.Repository.Models
 {
     public class BaseModel
     {
-        [Key]
-        [Column(name: "id")]
+        [Key, Column("id")]
         public int Id { get; set; }
 
-        [Column(name: "created_at")]
-        [DataType(DataType.DateTime)]
+        [Column("created_at"), DataType(DataType.DateTime)]
         public DateTime CreatedAt{ get; set; }
 
-        [Column(name: "updated_at")]
-        [DataType(DataType.DateTime)]
+        [Column("updated_at"), DataType(DataType.DateTime)]
         public DateTime UpdatedAt { get; set; }
 
-        [Column(name: "deleted_at")]
-        [DataType(DataType.DateTime)]
+        [Column("deleted_at"), DataType(DataType.DateTime)]
         public DateTime? DeletedAt { get; set; }
-
-        public dynamic Clone()
-        {
-            return (dynamic)this.MemberwiseClone();
-        }
     }
 }

@@ -8,26 +8,19 @@ namespace VeiculosAPI.Repository.Models
     [Table("modelos")]
     public class Modelo : BaseModel
     {
-        [Column(name: "nome")]
-        [Required]
-        [StringLength(255)]
+        [Required, Column("nome"), StringLength(255)]
         public string Nome { get; set; }
 
-        [Column(name: "inicio_fabricacao")]
-        [Required]
+        [Required, Column("inicio_fabricacao")]
         public int InicioFabricacao { get; set; }
 
-        [Column(name: "fim_fabricacao")]
+        [Column("fim_fabricacao")]
         public int? FimFabricacao { get; set; }
 
-        [Column(name: "imagem")]
-        [Required]
-        [StringLength(255)]
+        [Required, Column("imagem"), StringLength(255)]
         public string Imagem { get; set; }
 
-        [Column(name: "marca_id")]
-        [Required]
-        [ForeignKey("marca_foreign_key")]
+        [Required, Column("marca_id"), ForeignKey("marca_foreign_key")]
         public int MarcaId { get; set; }
 
         public virtual Marca Marca { get; set; }

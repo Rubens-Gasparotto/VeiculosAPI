@@ -15,7 +15,22 @@ namespace VeiculosAPI.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 64)
-                .HasAnnotation("ProductVersion", "5.0.12");
+                .HasAnnotation("ProductVersion", "5.0.13");
+
+            modelBuilder.Entity("PermissaoUsuario", b =>
+                {
+                    b.Property<int>("PermissoesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsuariosId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PermissoesId", "UsuariosId");
+
+                    b.HasIndex("UsuariosId");
+
+                    b.ToTable("PermissaoUsuario");
+                });
 
             modelBuilder.Entity("VeiculosAPI.Repository.Models.Marca", b =>
                 {
@@ -218,21 +233,19 @@ namespace VeiculosAPI.Migrations
                     b.ToTable("usuarios");
                 });
 
-            modelBuilder.Entity("VeiculosAPI.Repository.Models.UsuarioPermissao", b =>
+            modelBuilder.Entity("PermissaoUsuario", b =>
                 {
-                    b.Property<int>("PermissaoId")
-                        .HasColumnType("int")
-                        .HasColumnName("permissao_id");
+                    b.HasOne("VeiculosAPI.Repository.Models.Permissao", null)
+                        .WithMany()
+                        .HasForeignKey("PermissoesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int")
-                        .HasColumnName("usuario_id");
-
-                    b.HasKey("PermissaoId", "UsuarioId");
-
-                    b.HasIndex("UsuarioId");
-
-                    b.ToTable("usuarios_permissoes");
+                    b.HasOne("VeiculosAPI.Repository.Models.Usuario", null)
+                        .WithMany()
+                        .HasForeignKey("UsuariosId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("VeiculosAPI.Repository.Models.Modelo", b =>
@@ -244,25 +257,6 @@ namespace VeiculosAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("Marca");
-                });
-
-            modelBuilder.Entity("VeiculosAPI.Repository.Models.UsuarioPermissao", b =>
-                {
-                    b.HasOne("VeiculosAPI.Repository.Models.Permissao", "Permissao")
-                        .WithMany()
-                        .HasForeignKey("PermissaoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("VeiculosAPI.Repository.Models.Usuario", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Permissao");
-
-                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("VeiculosAPI.Repository.Models.Marca", b =>

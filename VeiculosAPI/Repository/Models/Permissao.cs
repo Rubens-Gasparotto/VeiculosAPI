@@ -8,22 +8,15 @@ namespace VeiculosAPI.Repository.Models
     [Table("permissoes")]
     public class Permissao : BaseModel
     {
-        [Required]
-        [StringLength(255)]
-        [Column(name: "nome")]
+        [Required, Column("nome"), StringLength(255)]
         public string Nome { get; set; }
 
-        [Required]
-        [StringLength(255)]
-        [Column(name: "tipo")]
+        [Required, Column("tipo"), StringLength(255)]
         public string Tipo { get; set; }
 
-        [Required]
-        [StringLength(255)]
-        [Column(name: "slug")]
+        [Required, Column("slug"), StringLength(255)]
         public string Slug { get; set; }
 
-        [JsonIgnore]
         public ICollection<Usuario> Usuarios { get; set; }
     }
 }

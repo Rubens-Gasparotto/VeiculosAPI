@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Debug;
 using System;
 using System.Linq;
 using System.Threading;
@@ -11,6 +13,8 @@ namespace VeiculosAPI.Repository
     public class VeiculosDb : DbContext
     {
         public VeiculosDb(DbContextOptions<VeiculosDb> options) : base(options) { }
+
+        //public static readonly LoggerFactory _myLoggerFactory = new(new[] { new DebugLoggerProvider() });
 
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Marca> Marcas { get; set; }
@@ -24,11 +28,12 @@ namespace VeiculosAPI.Repository
 
             modelBuilder.Entity<Marca>().HasMany(c => c.Modelos).WithOne(c => c.Marca).HasForeignKey(c => c.MarcaId);
             modelBuilder.Entity<Modelo>().HasOne(c => c.Marca).WithMany(c => c.Modelos).HasForeignKey(c => c.MarcaId);
-            modelBuilder.Entity<Usuario>().HasMany(c => c.Permissoes).WithMany(c => c.Usuarios).UsingEntity<UsuarioPermissao>(
-                j => j.HasOne(c => c.Permissao).WithMany().HasForeignKey(x => x.PermissaoId),
-                j => j.HasOne(c => c.Usuario).WithMany().HasForeignKey(x => x.UsuarioId)
-            );
         }
+
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseLoggerFactory(_myLoggerFactory);
+        //}
 
         public override int SaveChanges()
         {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
+using System.Threading.Tasks;
 using VeiculosAPI.Repository.DTOs.Usuario;
 using VeiculosAPI.Repository.Models;
 using VeiculosAPI.Services.UsuarioService.Interfaces;
@@ -15,34 +15,33 @@ namespace VeiculosAPI.Controllers
     public class UsuarioController : BaseController<Usuario, UsuarioDTO, UsuarioCreateDTO, UsuarioEditDTO>
     {
         private readonly IUsuarioService usuarioService;
-        public UsuarioController(IUsuarioService _service, IHttpContextAccessor httpContextAccessor) : base(_service)
+        public UsuarioController(IUsuarioService _service, IHttpContextAccessor httpContextAccessor) : base(_service, httpContextAccessor)
         {
             usuarioService = _service;
-            base.usuarioId = int.Parse(httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            base.slugPermissao = "usuarios";
+            slugPermissao = "usuarios";
         }
 
         [HttpGet]
         [AllowAnonymous]
         [Route("{id:int}/verificar-email")]
         [Produces("application/json")]
-        public ActionResult VerificarEmail([FromRoute] int id)
+        public async Task<ActionResult> VerificarEmail([FromRoute] int id)
         {
-            return Ok(usuarioService.VerificarEmail(id));
+            return Ok(await usuarioService.VerificarEmail(id));
         }
 
         [HttpPut]
         [Route("{id:int}/permissoes")]
         [Produces("application/json")]
-        public ActionResult SetPermissoes([FromRoute] int id, [FromBody] UsuarioEditPermissoesDTO dados)
+        public async Task<ActionResult> SetPermissoes([FromRoute] int id, [FromBody] UsuarioEditPermissoesDTO dados)
         {
-            if (!HasPermissao("editar:usuarios"))
+            if (!await HasPermissao("editar:usuarios"))
                 return Forbid();
 
-            if (!base.service.Exists(id))
+            if (!await service.Exists(id))
                 return NotFound();
 
-            usuarioService.SetPermissoes(id, dados).Wait();
+            await usuarioService.SetPermissoes(id, dados);
 
             return Ok("Permissões atualizadas com sucesso!");
         }

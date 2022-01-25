@@ -5,17 +5,11 @@ namespace VeiculosAPI.Repository.DTOs.Permissao
 {
     public class PermissaoDTO : BaseDTO
     {
-        [Required]
         public int Id { get; set; }
-        [Required]
         public string Nome { get; set; }
-        [Required]
         public string Tipo { get; set; }
-        [Required]
         public string Slug { get; set; }
-        [Required]
         public DateTime CreatedAt { get; set; }
-        [Required]
         public DateTime UpdatedAt { get; set; }
     }
 
