@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -14,7 +15,7 @@ namespace VeiculosAPI.Repository.Models
         [Column("email"), DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
-        [Column("senha"), DataType(DataType.Password)]
+        [Column("senha"), DataType(DataType.Password), JsonIgnore]
         public string Senha { get; set; }
 
         [Column("email_verificado_em"), DataType(DataType.DateTime)]

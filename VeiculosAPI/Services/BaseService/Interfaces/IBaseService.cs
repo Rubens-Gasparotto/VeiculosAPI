@@ -8,8 +8,8 @@ namespace VeiculosAPI.Services.BaseService.Interfaces
     {
         public Task<List<TDTO>> GetAll();
         public Task<TDTO> Get(int id);
-        public Task<T> Create(TCreateDTO dados);
-        public Task<T> Update(int id, TEditDTO dados);
+        public Task<TDTO> Create(TCreateDTO dados);
+        public Task<TDTO> Update(int id, TEditDTO dados);
         public Task<bool> Delete(int id);
         public Task<bool> Exists(int id);
         public Task<List<Permissao>> GetPermissoes(int usuarioId);

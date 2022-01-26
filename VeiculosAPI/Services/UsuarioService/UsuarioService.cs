@@ -25,7 +25,7 @@ namespace VeiculosAPI.Services.UsuarioService
             return mapper.Map<Usuario, UsuarioWithPermissaoDTO>(usuario);
         }
 
-        public async override Task<Usuario> Create(UsuarioCreateDTO dados)
+        public async override Task<UsuarioDTO> Create(UsuarioCreateDTO dados)
 		{
 			Usuario salvarDado = mapper.Map<UsuarioCreateDTO, Usuario>(dados);
 
@@ -40,7 +40,7 @@ namespace VeiculosAPI.Services.UsuarioService
 			Email email = new();
 			email.Send("Verificação de e-mail", dadosSalvos.Entity.Email, body);
 
-			return dadosSalvos.Entity;
+			return mapper.Map<Usuario, UsuarioDTO>(dadosSalvos.Entity);
 		}
 
 		public async Task<string> VerificarEmail(int id)

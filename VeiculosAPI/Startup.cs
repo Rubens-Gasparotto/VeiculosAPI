@@ -79,7 +79,14 @@ namespace VeiculosAPI
                 .AddNewtonsoftJson()
                 .AddFluentValidation(config => config.RegisterValidatorsFromAssembly(typeof(Modelo).Assembly));
 
-            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "VeiculosAPI", Version = "v1" }));
+            services.AddSwaggerGen(c => {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "VeiculosAPI",
+                    Description = "API para cadastro de marcas e modelos de veículos."
+                });
+            });
 
             services.AddScoped<IBaseService<BaseModel, BaseDTO, BaseCreateDTO, BaseEditDTO>, BaseService<BaseModel, BaseDTO, BaseCreateDTO, BaseEditDTO>>();
             services.AddScoped<IAuthService, AuthService>(); 

@@ -11,17 +11,23 @@ namespace VeiculosAPI.Controllers
     public class BaseController<TModel, TDTO, TCreateDTO, TEditDTO> : ControllerBase
     {
         public IBaseService<TModel, TDTO, TCreateDTO, TEditDTO> service;
-        public int usuarioId;
+        public int? usuarioId;
         public string slugPermissao;
 
         public BaseController(IBaseService<TModel, TDTO, TCreateDTO, TEditDTO> baseService, IHttpContextAccessor httpContextAccessor)
         {
             service = baseService;
-            usuarioId = int.Parse(httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var claim = httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (claim != null)
+                usuarioId = int.Parse(claim.Value);
         }
 
         [HttpGet]
         [Produces("application/json")]
+        /// <summary>
+        /// Busca todos os itens
+        /// </summary>
         public async virtual Task<ActionResult<List<TDTO>>> GetAll()
         {
             if (!await HasPermissao($"listar:{slugPermissao}"))
@@ -30,6 +36,9 @@ namespace VeiculosAPI.Controllers
             return Ok(await service.GetAll());
         }
 
+        /// <summary>
+        /// Busca um item pelo ID
+        /// </summary>
         [HttpGet]
         [Route("{id:int}")]
         [Produces("application/json")]
@@ -46,6 +55,9 @@ namespace VeiculosAPI.Controllers
             return Ok(item);
         }
 
+        /// <summary>
+        /// Cria um item
+        /// </summary>
         [HttpPost]
         [Produces("application/json")]
         public async virtual Task<ActionResult<TDTO>> Create([FromBody] TCreateDTO dados)
@@ -56,6 +68,9 @@ namespace VeiculosAPI.Controllers
             return Created("", await service.Create(dados));
         }
 
+        /// <summary>
+        /// Atualiza um item pelo ID
+        /// </summary>
         [HttpPut]
         [Route("{id:int}")]
         [Produces("application/json")]
@@ -67,9 +82,12 @@ namespace VeiculosAPI.Controllers
             if (!await service.Exists(id))
                 return NotFound();
 
-            return Ok(service.Update(id, dados));
+            return Ok(await service.Update(id, dados));
         }
 
+        /// <summary>
+        /// Remove um item pelo ID
+        /// </summary>
         [HttpDelete]
         [Route("{id:int}")]
         [Produces("application/json")]
@@ -86,9 +104,16 @@ namespace VeiculosAPI.Controllers
 
         internal async virtual Task<bool> HasPermissao(string slug)
         {
-            var permissoes = await service.GetPermissoes(usuarioId);
+            if (usuarioId != null)
+            {
+                var permissoes = await service.GetPermissoes(usuarioId.Value);
 
-            return permissoes.Any(permissao => permissao.Slug == slug);
+                return permissoes.Any(permissao => permissao.Slug == slug);
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

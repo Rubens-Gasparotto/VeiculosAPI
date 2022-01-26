@@ -37,19 +37,19 @@ namespace VeiculosAPI.Services.BaseService
 			return mapper.Map<T, TDTO>(item);
 		}
 
-		public async virtual Task<T> Create(TCreateDTO dados)
+		public async virtual Task<TDTO> Create(TCreateDTO dados)
 		{
 			T salvarDado = mapper.Map<TCreateDTO, T>(dados);
 			var dadosSalvos = await dbSet.AddAsync(salvarDado);
 
 			await Save();
 
-			return dadosSalvos.Entity;
+			return mapper.Map<T, TDTO>(dadosSalvos.Entity);
 		}
 
-		public async virtual Task<T> Update(int id, TEditDTO dados)
+		public async virtual Task<TDTO> Update(int id, TEditDTO dados)
 		{
-			T original = await dbSet.FirstAsync(c => c.Id == id);
+			T original = await dbSet.AsNoTracking().FirstAsync(c => c.Id == id);
 
 			T editarDado = mapper.Map<TEditDTO, T>(dados);
 
@@ -60,7 +60,7 @@ namespace VeiculosAPI.Services.BaseService
 
 			await Save();
 
-			return editarDado;
+			return mapper.Map<T, TDTO>(editarDado);
 		}
 
 		public async virtual Task<bool> Delete(int id)
