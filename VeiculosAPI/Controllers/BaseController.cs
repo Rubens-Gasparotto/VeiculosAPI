@@ -25,9 +25,6 @@ namespace VeiculosAPI.Controllers
 
         [HttpGet]
         [Produces("application/json")]
-        /// <summary>
-        /// Busca todos os itens
-        /// </summary>
         public async virtual Task<ActionResult<List<TDTO>>> GetAll()
         {
             if (!await HasPermissao($"listar:{slugPermissao}"))
@@ -36,9 +33,6 @@ namespace VeiculosAPI.Controllers
             return Ok(await service.GetAll());
         }
 
-        /// <summary>
-        /// Busca um item pelo ID
-        /// </summary>
         [HttpGet]
         [Route("{id:int}")]
         [Produces("application/json")]
@@ -55,9 +49,6 @@ namespace VeiculosAPI.Controllers
             return Ok(item);
         }
 
-        /// <summary>
-        /// Cria um item
-        /// </summary>
         [HttpPost]
         [Produces("application/json")]
         public async virtual Task<ActionResult<TDTO>> Create([FromBody] TCreateDTO dados)
@@ -68,9 +59,6 @@ namespace VeiculosAPI.Controllers
             return Created("", await service.Create(dados));
         }
 
-        /// <summary>
-        /// Atualiza um item pelo ID
-        /// </summary>
         [HttpPut]
         [Route("{id:int}")]
         [Produces("application/json")]
@@ -85,9 +73,6 @@ namespace VeiculosAPI.Controllers
             return Ok(await service.Update(id, dados));
         }
 
-        /// <summary>
-        /// Remove um item pelo ID
-        /// </summary>
         [HttpDelete]
         [Route("{id:int}")]
         [Produces("application/json")]

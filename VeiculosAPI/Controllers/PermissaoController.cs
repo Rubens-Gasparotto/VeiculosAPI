@@ -23,7 +23,7 @@ namespace VeiculosAPI.Controllers
         [NonAction]
         public async override Task<ActionResult<PermissaoDTO>> Create([FromBody] PermissaoCreateDTO dados)
         {
-            if (!await HasPermissao("criar:permissoes"))
+            if (!await HasPermissao($"criar:{slugPermissao}"))
                 return Forbid();
 
             return await base.Create(dados);
@@ -34,7 +34,7 @@ namespace VeiculosAPI.Controllers
         [NonAction]
         public async override Task<ActionResult<PermissaoDTO>> Update([FromRoute] int id, [FromBody] PermissaoEditDTO dados)
         {
-            if (!await HasPermissao("editar:permissoes"))
+            if (!await HasPermissao($"editar:{slugPermissao}"))
                 return Forbid();
 
             return await base.Update(id, dados);
@@ -45,7 +45,7 @@ namespace VeiculosAPI.Controllers
         [NonAction]
         public async override Task<ActionResult<bool>> Delete([FromRoute] int id)
         {
-            if (!await HasPermissao("remover:permissoes"))
+            if (!await HasPermissao($"remover:{slugPermissao}"))
                 return Forbid();
 
             return await base.Delete(id);

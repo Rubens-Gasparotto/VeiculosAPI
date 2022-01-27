@@ -28,4 +28,12 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\marcas\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\marcas\1643246037.jpg" />
+  </ItemGroup>
+
 </Project>
