@@ -30,10 +30,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\marcas\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="wwwroot\marcas\1643246037.jpg" />
+    <Folder Include="wwwroot\modelos\" />
   </ItemGroup>
 
 </Project>

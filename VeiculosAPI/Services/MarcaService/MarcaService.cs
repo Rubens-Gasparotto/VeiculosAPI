@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -60,6 +59,9 @@ namespace VeiculosAPI.Services.MarcaService
 
         private static async Task<string> SaveImagem(IFormFile file)
         {
+            if (!Directory.Exists("wwwroot/marcas/"))
+                Directory.CreateDirectory("wwwroot/marcas/");
+
             if (file.Length > 0)
             {
                 string path = ((int)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds).ToString() + Path.GetExtension(file.FileName);

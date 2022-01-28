@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.ComponentModel.DataAnnotations;
 using VeiculosAPI.Repository.DTOs.Marca;
 
@@ -6,22 +7,13 @@ namespace VeiculosAPI.Repository.DTOs.Modelo
 {
     public class ModeloDTO : ModeloMarcaDTO
     {
-        [Required]
         public int Id { get; set; }
-        [Required]
-        [StringLength(255)]
         public string Nome { get; set; }
-        [Required]
         public int InicioFabricacao { get; set; }
-        public int FimFabricacao { get; set; }
-        [Required]
-        [StringLength(255)]
+        public Nullable<int> FimFabricacao { get; set; }
         public string Imagem { get; set; }
-        [Required]
         public int MarcaId { get; set; }
-        [Required]
         public DateTime CreatedAt { get; set; }
-        [Required]
         public DateTime UpdatedAt { get; set; }
     }
 
@@ -32,15 +24,13 @@ namespace VeiculosAPI.Repository.DTOs.Modelo
 
     public class ModeloCreateDTO : BaseCreateDTO
     {
-        [Required]
-        [StringLength(255)]
+        [Required, StringLength(255)]
         public string Nome { get; set; }
         [Required]
         public int InicioFabricacao { get; set; }
-        public int? FimFabricacao { get; set; }
+        public Nullable<int> FimFabricacao { get; set; }
         [Required]
-        [StringLength(255)]
-        public string Imagem { get; set; }
+        public IFormFile Imagem { get; set; }
         [Required]
         public int MarcaId { get; set; }
 
@@ -48,15 +38,12 @@ namespace VeiculosAPI.Repository.DTOs.Modelo
 
     public class ModeloEditDTO : BaseEditDTO
     {
-        [Required]
-        [StringLength(255)]
+        [Required, StringLength(255)]
         public string Nome { get; set; }
         [Required]
         public int InicioFabricacao { get; set; }
-        public int? FimFabricacao { get; set; }
-        [Required]
-        [StringLength(255)]
-        public string Imagem { get; set; }
+        public Nullable<int> FimFabricacao { get; set; }
+        public IFormFile Imagem { get; set; }
         [Required]
         public int MarcaId { get; set; }
     }

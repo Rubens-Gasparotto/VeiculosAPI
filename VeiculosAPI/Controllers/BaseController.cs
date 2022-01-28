@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using VeiculosAPI.Repository.DTOs.Paginacao;
 using VeiculosAPI.Services.BaseService.Interfaces;
 
 namespace VeiculosAPI.Controllers
@@ -31,6 +32,17 @@ namespace VeiculosAPI.Controllers
                 return Forbid();
 
             return Ok(await service.GetAll());
+        }
+
+        [HttpGet]
+        [Route("paginados")]
+        [Produces("application/json")]
+        public async virtual Task<ActionResult<PaginacaoResponseDTO<TDTO>>> GetAllPaginate([FromQuery] PaginacaoDTO dadosPaginacao)
+        {
+            if (!await HasPermissao($"listar:{slugPermissao}"))
+                return Forbid();
+
+            return Ok(await service.GetAllPaginate(dadosPaginacao));
         }
 
         [HttpGet]

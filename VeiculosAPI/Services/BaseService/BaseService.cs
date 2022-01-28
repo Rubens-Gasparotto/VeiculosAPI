@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using VeiculosAPI.Repository;
 using VeiculosAPI.Repository.DTOs;
+using VeiculosAPI.Repository.DTOs.Paginacao;
 using VeiculosAPI.Repository.Models;
 using VeiculosAPI.Services.BaseService.Interfaces;
 
@@ -28,6 +29,24 @@ namespace VeiculosAPI.Services.BaseService
 			var items = await dbSet.Where(c => c.DeletedAt == null).ToListAsync();
 
 			return mapper.Map<List<T>, List<TDTO>>(items);
+		}
+
+		public async virtual Task<PaginacaoResponseDTO<TDTO>> GetAllPaginate(PaginacaoDTO dadosPaginacao)
+		{
+			var pagina = dadosPaginacao.Pagina.Value;
+			var itensPagina = dadosPaginacao.ItensPagina.Value;
+
+			var items = await dbSet.Skip((pagina - 1) * itensPagina).Take(itensPagina).Where(c => c.DeletedAt == null).ToListAsync();
+
+			var totalItens = await dbSet.Where(c => c.DeletedAt == null).CountAsync();
+
+			return new PaginacaoResponseDTO<TDTO> {
+				Pagina = pagina,
+				ItensPagina = itensPagina,
+				TotalItens = totalItens,
+				UltimaPagina = (int)Math.Ceiling((decimal)totalItens / itensPagina),
+				Itens = mapper.Map<List<T>, List<TDTO>>(items)
+			};
 		}
 
 		public async virtual Task<TDTO> Get(int id)

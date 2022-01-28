@@ -48,7 +48,7 @@ namespace VeiculosAPI.Services.AuthService
 
         private async Task<bool> ChecarCredenciais(string email, string senha)
         {
-            Usuario usuario = await context.Usuarios.AsNoTracking().SingleAsync(usuario => usuario.Email == email);
+            Usuario usuario = await context.Usuarios.AsNoTracking().SingleOrDefaultAsync(usuario => usuario.Email == email);
 
             if (usuario != null)
             {
